@@ -23,7 +23,7 @@ The deployment uses three Control Nodes configured in an HA cluster with VRRP en
 ```
 .
 ├── README.md
-├── diagrams/
+├── pictures/
 └── scripts/
 ```
 
