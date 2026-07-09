@@ -8,25 +8,7 @@ The deployment uses three Control Nodes configured in an HA cluster with VRRP en
 
 # Architecture
 
-```mermaid
-graph TD
-
-    XC[F5 Distributed Cloud Regional Edge]
-
-    subgraph VMware Cluster
-        CE1[CE50<br/>Control Node]
-        CE2[CE51<br/>Control Node]
-        CE3[CE52<br/>Control Node]
-    end
-
-    XC <-- IPSec / SSL Tunnel --> CE1
-    XC <-- IPSec / SSL Tunnel --> CE2
-    XC <-- IPSec / SSL Tunnel --> CE3
-
-    CE1 --- CE2
-    CE2 --- CE3
-    CE3 --- CE1
-```
+![f5 XC CE Cluster](./images/ce-cluster.png)
 
 ---
 
