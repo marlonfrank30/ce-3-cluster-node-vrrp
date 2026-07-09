@@ -31,7 +31,7 @@ The deployment uses three Control Nodes configured in an HA cluster with VRRP en
 
 # Deployment Topology
 
-Each Customer Edge VM contains a single interface.
+Each Customer Edge VM contains a single interface but could have been configured with two or more interfaces.
 
 ![f5 XC CE Cluster](./images/ce-cluster4.png)
 
