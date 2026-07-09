@@ -117,23 +117,8 @@ Each node is configured as follows.
 |------------|------|----------|------------|
 | ens192 | Yes | Yes | No |
 
-Mermaid representation
 
-```mermaid
-graph LR
-
-Internet --> DHCP
-
-DHCP --> CE50
-DHCP --> CE51
-DHCP --> CE52
-
-CE50 --> XC[F5 Distributed Cloud]
-
-CE51 --> XC
-
-CE52 --> XC
-```
+![f5 XC CE Cluster](./images/ce-cluster5.png)
 
 ---
 
