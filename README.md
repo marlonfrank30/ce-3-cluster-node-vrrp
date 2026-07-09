@@ -2,7 +2,7 @@
 
 This repository documents the deployment of a **3-node Highly Available Customer Edge (CE) Cluster** running on **VMware** using **F5 Distributed Cloud (XC)**.
 
-The deployment uses three Control Nodes configured in an HA cluster with VRRP enabled, using the default software and operating system versions provided by F5 Distributed Cloud.
+The deployment uses three Control Nodes configured in an HA cluster with VRRP enabled, using the default software and operating system versions provided by F5 Distributed Cloud. Its primarily use case is for App Connect, though. 
 
 ---
 
