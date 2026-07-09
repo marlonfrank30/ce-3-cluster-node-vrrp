@@ -14,29 +14,7 @@ The deployment uses three Control Nodes configured in an HA cluster with VRRP en
 
 # High Availability
 
-The Customer Edge cluster consists of three control nodes.
-
-- 3 Control Nodes
-- HA Enabled
-- VRRP Enabled
-- Site-to-Site tunnels (IPSec/SSL)
-- Kubernetes Upgrade Drain enabled
-- Default Local VRF
-- Default DNS/NTP
-- VMware deployment
-- Performance Mode: L7 Enhanced
-
-```mermaid
-flowchart LR
-
-A[Control Node 1]
-B[Control Node 2]
-C[Control Node 3]
-
-A <-- VRRP --> B
-B <-- VRRP --> C
-C <-- VRRP --> A
-```
+![f5 XC CE Cluster](./images/ce-cluster2.png)
 
 ---
 
@@ -45,8 +23,6 @@ C <-- VRRP --> A
 ```
 .
 ├── README.md
-├── terraform/
-├── manifests/
 ├── diagrams/
 └── scripts/
 ```
