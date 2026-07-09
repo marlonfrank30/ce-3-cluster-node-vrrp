@@ -1,0 +1,492 @@
+# F5 Distributed Cloud Customer Edge (CE) 3-Node Cluster on VMware
+
+This repository documents the deployment of a **3-node Highly Available Customer Edge (CE) Cluster** running on **VMware** using **F5 Distributed Cloud (XC)**.
+
+The deployment uses three Control Nodes configured in an HA cluster with VRRP enabled, using the default software and operating system versions provided by F5 Distributed Cloud.
+
+---
+
+# Architecture
+
+```mermaid
+graph TD
+
+    XC[F5 Distributed Cloud Regional Edge]
+
+    subgraph VMware Cluster
+        CE1[CE50<br/>Control Node]
+        CE2[CE51<br/>Control Node]
+        CE3[CE52<br/>Control Node]
+    end
+
+    XC <-- IPSec / SSL Tunnel --> CE1
+    XC <-- IPSec / SSL Tunnel --> CE2
+    XC <-- IPSec / SSL Tunnel --> CE3
+
+    CE1 --- CE2
+    CE2 --- CE3
+    CE3 --- CE1
+```
+
+---
+
+# High Availability
+
+The Customer Edge cluster consists of three control nodes.
+
+- 3 Control Nodes
+- HA Enabled
+- VRRP Enabled
+- Site-to-Site tunnels (IPSec/SSL)
+- Kubernetes Upgrade Drain enabled
+- Default Local VRF
+- Default DNS/NTP
+- VMware deployment
+- Performance Mode: L7 Enhanced
+
+```mermaid
+flowchart LR
+
+A[Control Node 1]
+B[Control Node 2]
+C[Control Node 3]
+
+A <-- VRRP --> B
+B <-- VRRP --> C
+C <-- VRRP --> A
+```
+
+---
+
+# Repository Structure
+
+```
+.
+├── README.md
+├── terraform/
+├── manifests/
+├── diagrams/
+└── scripts/
+```
+
+---
+
+# Deployment Topology
+
+Each Customer Edge VM contains a single interface.
+
+```
+ens192
+    │
+DHCP
+    │
+Site Local Network
+```
+
+Node inventory
+
+| Hostname | Type | Interface |
+|-----------|------|-----------|
+| ce50-madebeen-com | Control | ens192 |
+| ce51-madebeen-com | Control | ens192 |
+| ce52-madebeen-com | Control | ens192 |
+
+---
+
+# Deployment Flow
+
+```mermaid
+sequenceDiagram
+
+participant Admin
+participant VMware
+participant CE
+participant XC as F5 Distributed Cloud
+
+Admin->>VMware: Deploy CE OVA
+VMware->>CE: Boot VM
+CE->>DHCP: Request IP Address
+DHCP-->>CE: IP Address
+CE->>XC: Register Site
+XC-->>CE: Approve Registration
+CE->>XC: Establish IPSec/SSL Tunnel
+XC-->>CE: Cluster Online
+```
+
+---
+
+# Prerequisites
+
+Before deployment ensure the following are available.
+
+## VMware
+
+- VMware ESXi
+- vCenter (optional)
+- VM Network
+- DHCP service
+- Internet connectivity
+
+## F5 Distributed Cloud
+
+- Tenant
+- API Credentials
+- Site Token
+- CE OVA Image
+- Appropriate permissions
+
+---
+
+# Customer Edge Configuration
+
+## Site Information
+
+| Property | Value |
+|-----------|-------|
+| Platform | VMware |
+| Cluster Size | 3 |
+| HA | Enabled |
+| VRRP | Enabled |
+| Tunnel | IPSec or SSL |
+| Local VRF | Default |
+| Proxy | Disabled |
+| Forward Proxy | Disabled |
+| Offline Survivability | Disabled |
+
+---
+
+## Software
+
+| Component | Version |
+|-----------|----------|
+| CE Software | crt-20251002-0028 |
+| Operating System | 9.2026.10 |
+| Host OS | RHEL 9 (2026.10) |
+
+---
+
+## Performance
+
+- L7 Enhanced Performance Mode
+- Jumbo Frames Disabled
+
+---
+
+# Network Configuration
+
+Each node is configured as follows.
+
+| Interface | DHCP | Primary | Management |
+|------------|------|----------|------------|
+| ens192 | Yes | Yes | No |
+
+Mermaid representation
+
+```mermaid
+graph LR
+
+Internet --> DHCP
+
+DHCP --> CE50
+DHCP --> CE51
+DHCP --> CE52
+
+CE50 --> XC[F5 Distributed Cloud]
+
+CE51 --> XC
+
+CE52 --> XC
+```
+
+---
+
+# Installation Guide
+
+## Step 1
+
+Download the Customer Edge OVA from the F5 Distributed Cloud Console.
+
+---
+
+## Step 2
+
+Deploy three virtual machines.
+
+Example
+
+```
+ce50-madebeen-com
+ce51-madebeen-com
+ce52-madebeen-com
+```
+
+---
+
+## Step 3
+
+Allocate resources.
+
+Recommended
+
+| Resource | Value |
+|-----------|-------|
+| CPU | 4 vCPU |
+| Memory | 16 GB |
+| Disk | 80 GB |
+
+---
+
+## Step 4
+
+Connect each VM to the Site Local Network.
+
+```
+ens192
+```
+
+Enable DHCP.
+
+---
+
+## Step 5
+
+Power on each VM.
+
+Verify each machine receives an IP address.
+
+```
+ip addr
+```
+
+---
+
+## Step 6
+
+Generate a Site Token from the Distributed Cloud Console.
+
+```
+Multi-Cloud Network Connect
+
+↓
+
+Manage
+
+↓
+
+Site Management
+
+↓
+
+Site Tokens
+```
+
+---
+
+## Step 7
+
+Register the site using the generated token.
+
+The node automatically connects to the Distributed Cloud Regional Edge.
+
+---
+
+## Step 8
+
+Approve the site registration.
+
+```
+Manage
+
+↓
+
+Site Management
+
+↓
+
+Registrations
+```
+
+Approve the pending registration.
+
+---
+
+## Step 9
+
+Wait for cluster formation.
+
+The three nodes elect a leader and establish HA.
+
+---
+
+## Step 10
+
+Verify connectivity.
+
+Expected status
+
+```
+3 Control Nodes
+
+HA Enabled
+
+VPN Established
+
+Online
+```
+
+---
+
+# Upgrade Configuration
+
+The cluster uses Kubernetes drain during upgrades.
+
+Current settings
+
+```
+Drain Timeout: 300 seconds
+
+Maximum Unavailable Nodes: 1
+```
+
+This allows rolling upgrades while maintaining service availability.
+
+---
+
+# Security
+
+Current configuration
+
+- No Forward Proxy
+- No URL Categorization
+- Default DNS
+- Default NTP
+- IPSec/SSL encrypted tunnels
+- Proxy enabled for XC communication
+- Site-to-Site Connectivity
+
+---
+
+# Cluster Components
+
+```mermaid
+graph TB
+
+subgraph VMware
+
+VM1[CE50]
+VM2[CE51]
+VM3[CE52]
+
+end
+
+subgraph Distributed Cloud
+
+REGIONAL[Regional Edge]
+CONTROLLER[Global Controller]
+
+end
+
+VM1 --> REGIONAL
+VM2 --> REGIONAL
+VM3 --> REGIONAL
+
+REGIONAL --> CONTROLLER
+```
+
+---
+
+# Configuration Summary
+
+| Setting | Value |
+|----------|-------|
+| Provider | VMware |
+| Site Type | Customer Edge |
+| Nodes | 3 |
+| Node Role | Control |
+| HA | Enabled |
+| VRRP | Enabled |
+| Tunnel | IPSec or SSL |
+| Software Version | crt-20251002-0028 |
+| OS Version | 9.2026.10 |
+| DHCP | Enabled |
+| Local VRF | Default |
+| DNS | F5 Default |
+| NTP | F5 Default |
+
+---
+
+# Troubleshooting
+
+## Site Registration Failed
+
+Verify
+
+- Internet connectivity
+- DNS resolution
+- NTP synchronization
+- Site Token validity
+
+---
+
+## Tunnel Down
+
+Verify
+
+- Firewall rules
+- Outbound HTTPS
+- IPSec ports
+- Regional Edge reachability
+
+---
+
+## Cluster Not Forming
+
+Verify
+
+- All nodes can reach each other
+- Same site token used
+- Time synchronization
+- DHCP leases
+- VMware networking
+
+---
+
+# Useful Commands
+
+Show interfaces
+
+```bash
+ip addr
+```
+
+Show routes
+
+```bash
+ip route
+```
+
+Ping Regional Edge
+
+```bash
+ping <regional-edge-ip>
+```
+
+Check connectivity
+
+```bash
+curl https://ves.io
+```
+
+---
+
+# References
+
+- F5 Distributed Cloud Documentation
+- Customer Edge Deployment Guide
+- VMware Deployment Guide
+
+---
+
+# License
+
+MIT License
