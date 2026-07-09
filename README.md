@@ -53,23 +53,7 @@ Node inventory
 
 # Deployment Flow
 
-```mermaid
-sequenceDiagram
-
-participant Admin
-participant VMware
-participant CE
-participant XC as F5 Distributed Cloud
-
-Admin->>VMware: Deploy CE OVA
-VMware->>CE: Boot VM
-CE->>DHCP: Request IP Address
-DHCP-->>CE: IP Address
-CE->>XC: Register Site
-XC-->>CE: Approve Registration
-CE->>XC: Establish IPSec/SSL Tunnel
-XC-->>CE: Cluster Online
-```
+![f5 XC CE Cluster](./images/ce-cluster3.png)
 
 ---
 
