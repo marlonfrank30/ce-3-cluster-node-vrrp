@@ -290,30 +290,7 @@ Current configuration
 
 # Cluster Components
 
-```mermaid
-graph TB
-
-subgraph VMware
-
-VM1[CE50]
-VM2[CE51]
-VM3[CE52]
-
-end
-
-subgraph Distributed Cloud
-
-REGIONAL[Regional Edge]
-CONTROLLER[Global Controller]
-
-end
-
-VM1 --> REGIONAL
-VM2 --> REGIONAL
-VM3 --> REGIONAL
-
-REGIONAL --> CONTROLLER
-```
+![f5 XC CE Cluster](./images/ce-cluster6.png)
 
 ---
 
