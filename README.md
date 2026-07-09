@@ -56,6 +56,7 @@ Node inventory
 ![f5 XC CE Cluster](./images/ce-cluster3.png)
 
 ---
+Notes: Step 6 should happen automatically no manual intervention required for SMSv2
 
 # Prerequisites
 
