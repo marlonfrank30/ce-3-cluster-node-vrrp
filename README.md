@@ -33,13 +33,7 @@ The deployment uses three Control Nodes configured in an HA cluster with VRRP en
 
 Each Customer Edge VM contains a single interface.
 
-```
-ens192
-    │
-DHCP
-    │
-Site Local Network
-```
+![f5 XC CE Cluster](./images/ce-cluster4.png)
 
 Node inventory
 
