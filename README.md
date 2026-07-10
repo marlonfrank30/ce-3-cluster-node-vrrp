@@ -49,7 +49,7 @@ Node inventory
 # Deployment Flow
 
 ![f5 XC CE Cluster](./images/ce-cluster3.png)
-## Note: Step 6 should happen automatically no manual intervention required for SMSv2
+Note: Step 6 should happen automatically no manual intervention required for SMSv2
 ---
 
 
