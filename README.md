@@ -385,15 +385,15 @@ curl https://ves.io
 3) CEs use NTP and also needs to be allowed through the firewall for time sync besides all the documented subnets.
 4) All the CEs need to come up as control plane in the cluster (that’s what the HA setting does). We also need to enable the HA setting as it is off by default.
 5) Registration process has to be automatic. No need to approve anything.
-6) Set Guest OS Version to RHEL 8 and not 9 due to legacy path as per https://knowledge.broadcom.com/external/article/420713/vsphere-guest-os-customization-workflow.html  
+6) Set Guest OS Version to RHEL 8 and not 9 due to legacy path as per article under References.  
 
 ---
 
 # References
 
-- F5 Distributed Cloud Documentation
+- F5 Distributed Cloud Documentation - https://my.f5.com/manage/s/article/K000152959
 - Customer Edge Deployment Guide
-- VMware Deployment Guide
+- VMware Deployment Guide - https://knowledge.broadcom.com/external/article/420713/vsphere-guest-os-customization-workflow.html 
 
 ---
 
