@@ -147,7 +147,7 @@ ce52-madebeen-com
 
 ## Step 3
 
-Allocate resources.
+Allocate resources for Medium CEs. More sizing exercises available under References.
 
 Recommended
 
@@ -391,7 +391,7 @@ curl https://ves.io
 
 # References
 
-- F5 Distributed Cloud Documentation - https://my.f5.com/manage/s/article/K000152959
+- F5 Distributed Cloud Documentation - https://my.f5.com/manage/s/article/K000152959, https://docs.cloud.f5.com/docs-v2/multi-cloud-network-connect/reference/ce-site-size-ref
 - Customer Edge Deployment Guide
 - VMware Deployment Guide - https://knowledge.broadcom.com/external/article/420713/vsphere-guest-os-customization-workflow.html 
 
