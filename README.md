@@ -213,7 +213,7 @@ The node automatically connects to the Distributed Cloud Regional Edge.
 
 ---
 
-## Step 8
+## Step 8 (SMSV1 only)
 
 Approve the site registration.
 
